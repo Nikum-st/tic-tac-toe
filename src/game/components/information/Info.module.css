@@ -1,0 +1,16 @@
+.message {
+	font-size: 25px;
+	margin: 20px;
+	text-align: center;
+	border: 2px solid #ff6f6f;
+	padding: 20px;
+	border-radius: 20px;
+}
+
+.x {
+	color: #dab900;
+}
+
+.o {
+	color: #6f6fff;
+}

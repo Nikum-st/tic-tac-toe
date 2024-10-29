@@ -1,0 +1,34 @@
+.game {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	flex-direction: column;
+}
+.label {
+	text-align: center;
+	margin: 20px;
+}
+.info {
+	text-align: center;
+	margin: 20px;
+}
+.restart {
+	background-color: #007bff;
+	border: 1px solid #007bff;
+	color: white;
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background-color 0.3s;
+	margin: 20px;
+}
+
+.restart:hover {
+	background-color: #0056b3;
+}
+
+.restart:active {
+	background-color: #004085;
+}
