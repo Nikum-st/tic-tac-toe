@@ -1,7 +1,10 @@
 import InfoLayout from "./InformationLayout";
 import PropTypes from "prop-types";
+import { store } from "../../store/store";
 
-export default function Info({ isDraw, isGameEnded, currentPlayer }) {
+export default function Info() {
+	const { isDraw, isGameEnded, currentPlayer } = store.getState();
+
 	const message = isDraw
 		? "Ничья!"
 		: isGameEnded

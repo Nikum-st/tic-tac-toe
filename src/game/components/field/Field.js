@@ -1,17 +1,12 @@
+import { useState } from "react";
+import { store } from "../../store/store";
 import FieldLayout from "./FieldLayout";
 import PropTypes from "prop-types";
 
-export default function Field({
-	field,
-	currentPlayer,
-	setCurrentPlayer,
-	setField,
-	isGameEnded,
-	checkWinner,
-	setIsGameEnded,
-	checkDraw,
-	setIsDraw,
-}) {
+export default function Field({ checkWinner, checkDraw }) {
+	const [state, setState] = useState(store.getState());
+	const { isGameEnded, field, currentPlayer } = state;
+
 	const onClick = (index) => {
 		if (isGameEnded || field[index].value) return;
 
@@ -23,19 +18,23 @@ export default function Field({
 		});
 
 		if (checkWinner(newField)) {
-			setField(newField);
-			setIsGameEnded(true);
+			store.dispatch({ type: "SET_FIELD", payload: newField });
+			store.dispatch({ type: "SET_IS_GAME_ENDED", payload: true });
 		} else if (checkDraw(newField)) {
-			setField(newField);
-			setIsDraw(true);
-			setIsGameEnded(true);
+			store.dispatch({ type: "SET_FIELD", payload: newField });
+			store.dispatch({ type: "SET_IS_DRAW", payload: true });
+			store.dispatch({ type: "SET_IS_GAME_ENDED", payload: true });
 		} else {
-			setField(newField);
-			setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
+			store.dispatch({ type: "SET_FIELD", payload: newField });
+			store.dispatch({
+				type: "SET_CURRENT_PLAYER",
+				payload: currentPlayer === "X" ? "O" : "X",
+			});
 		}
+		setState(store.getState());
 	};
 
-	return <FieldLayout field={field} onClick={onClick} />;
+	return <FieldLayout onClick={onClick} />;
 }
 
 Field.propTypes = {

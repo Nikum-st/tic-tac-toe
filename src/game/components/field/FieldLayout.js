@@ -1,11 +1,12 @@
+import { store } from "../../store/store";
 import styles from "./Field.module.css";
 import PropTypes from "prop-types";
 
-export default function FieldLayout({ field, onClick }) {
+export default function FieldLayout({ onClick }) {
 	return (
 		<div className={styles.field}>
 			<ul>
-				{field.map(({ id, value }, index) => (
+				{store.getState().field.map(({ id, value }, index) => (
 					<button
 						id={id}
 						value={value}

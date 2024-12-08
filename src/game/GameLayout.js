@@ -2,43 +2,17 @@ import styles from "./Game.module.css";
 import Field from "./components/field/Field";
 import Info from "./components/information/Information";
 import PropTypes from "prop-types";
+import { store } from "./store/store";
 
-export function GameLayout({
-	currentPlayer,
-	setCurrentPlayer,
-	isGameEnded,
-	setIsGameEnded,
-	isDraw,
-	setIsDraw,
-	field,
-	setField,
-	restartGame,
-	checkWinner,
-	checkDraw,
-}) {
+export function GameLayout({ restartGame, checkWinner, checkDraw }) {
 	return (
 		<div className={styles.game}>
 			<h1 className={styles.label}>Игра: "Крестики-Нолики"</h1>
-			<Field
-				checkDraw={checkDraw}
-				checkWinner={checkWinner}
-				setField={setField}
-				field={field}
-				isDraw={isDraw}
-				currentPlayer={currentPlayer}
-				setCurrentPlayer={setCurrentPlayer}
-				setIsGameEnded={setIsGameEnded}
-				setIsDraw={setIsDraw}
-				isGameEnded={isGameEnded}
-			/>
-			<Info
-				isDraw={isDraw}
-				isGameEnded={isGameEnded}
-				currentPlayer={currentPlayer}
-			/>
+			<Field checkDraw={checkDraw} checkWinner={checkWinner} />
+			<Info />
 			<button
 				onClick={() => restartGame()}
-				hidden={!isGameEnded}
+				hidden={store.getState().isGameEnded === false}
 				className={styles.restart}
 			>
 				Играть заново
