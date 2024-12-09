@@ -1,9 +1,18 @@
 import InfoLayout from "./InformationLayout";
 import PropTypes from "prop-types";
 import { store } from "../../store/store";
+import { useState, useEffect } from "react";
 
 export default function Info() {
-	const { isDraw, isGameEnded, currentPlayer } = store.getState();
+	const [state, setState] = useState(store.getState());
+
+	const { isDraw, isGameEnded, currentPlayer } = state;
+	useEffect(() => {
+		const unsubscribe = store.subscribe(() => {
+			setState(store.getState());
+		});
+		return () => unsubscribe();
+	}, []);
 
 	const message = isDraw
 		? "Ничья!"
