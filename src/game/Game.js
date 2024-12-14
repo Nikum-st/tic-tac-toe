@@ -1,21 +1,13 @@
+import { useSelector } from "react-redux";
 import styles from "./Game.module.css";
 import Field from "./components/field/Field";
 import Info from "./components/information/Information";
-import { store } from "./store/store";
-import { useEffect, useState } from "react";
-import restartGame from "./utils/restart-game";
+import useRestartGame from "./utils/use-restart-game";
+import { selectIsGameEnded } from "./store/selectors/is-game-ended";
 
 export function Game() {
-	const [state, setState] = useState(store.getState());
-
-	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setState(store.getState());
-		});
-		return () => unsubscribe();
-	}, []);
-
-	const { isGameEnded } = state;
+	const isGameEnded = useSelector(selectIsGameEnded);
+	const restartGame = useRestartGame();
 
 	return (
 		<div className={styles.game}>

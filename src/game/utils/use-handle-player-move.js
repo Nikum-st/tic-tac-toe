@@ -1,19 +1,20 @@
-import { store } from "../store/store";
-import { useEffect, useState } from "react";
 import checkWinner from "./check-winners";
 import checkDraw from "./check-draw";
+import { selectIsGameEnded, selectCurrentPlayer, selectField } from "../store";
+import {
+	setField,
+	setIsDraw,
+	setIsGameEnded,
+	setCurrentPlayer,
+} from "../store";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function useHandlePlayerMove() {
-	const [state, setState] = useState(store.getState());
+	const isGameEnded = useSelector(selectIsGameEnded);
+	const field = useSelector(selectField);
+	const currentPlayer = useSelector(selectCurrentPlayer);
 
-	const { isGameEnded, field, currentPlayer } = state;
-
-	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setState(store.getState());
-		});
-		return () => unsubscribe();
-	}, []);
+	const dispatch = useDispatch();
 
 	const handlePlayerMove = (index) => {
 		if (isGameEnded || field[index].value) return;
@@ -26,18 +27,15 @@ export default function useHandlePlayerMove() {
 		});
 
 		if (checkWinner(newField)) {
-			store.dispatch({ type: "SET_FIELD", payload: newField });
-			store.dispatch({ type: "SET_IS_GAME_ENDED", payload: true });
+			dispatch(setField(newField));
+			dispatch(setIsGameEnded(true));
 		} else if (checkDraw(newField)) {
-			store.dispatch({ type: "SET_FIELD", payload: newField });
-			store.dispatch({ type: "SET_IS_DRAW", payload: true });
-			store.dispatch({ type: "SET_IS_GAME_ENDED", payload: true });
+			dispatch(setField(newField));
+			dispatch(setIsDraw(true));
+			dispatch(setIsGameEnded(true));
 		} else {
-			store.dispatch({ type: "SET_FIELD", payload: newField });
-			store.dispatch({
-				type: "SET_CURRENT_PLAYER",
-				payload: currentPlayer === "X" ? "O" : "X",
-			});
+			dispatch(setField(newField));
+			dispatch(setCurrentPlayer(currentPlayer === "X" ? "O" : "X"));
 		}
 	};
 	return handlePlayerMove;

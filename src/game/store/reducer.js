@@ -1,19 +1,4 @@
-const initialState = {
-	field: [
-		{ id: 1, value: "" },
-		{ id: 2, value: "" },
-		{ id: 3, value: "" },
-		{ id: 4, value: "" },
-		{ id: 5, value: "" },
-		{ id: 6, value: "" },
-		{ id: 7, value: "" },
-		{ id: 8, value: "" },
-		{ id: 9, value: "" },
-	],
-	isDraw: false,
-	isGameEnded: false,
-	currentPlayer: "X",
-};
+import { initialState } from "../utils/date/initial-state";
 
 export const appReducer = (state = initialState, action) => {
 	const { type, payload } = action;
@@ -30,6 +15,9 @@ export const appReducer = (state = initialState, action) => {
 		}
 		case "SET_IS_GAME_ENDED": {
 			return { ...state, isGameEnded: payload };
+		}
+		case "SET_INITIAL_STATE": {
+			return initialState;
 		}
 		default: {
 			return state;

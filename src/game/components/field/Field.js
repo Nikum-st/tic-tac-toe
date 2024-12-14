@@ -1,13 +1,15 @@
-import { store } from "../../store/store";
 import useHandlePlayerMove from "../../utils/use-handle-player-move";
 import styles from "./Field.module.css";
+import { selectField } from "../../store";
+import { useSelector } from "react-redux";
 
 export default function Field() {
 	const handlePlayerMove = useHandlePlayerMove();
+	const field = useSelector(selectField);
 	return (
 		<div className={styles.field}>
 			<ul>
-				{store.getState().field.map(({ id, value }, index) => (
+				{field.map(({ id, value }, index) => (
 					<button
 						id={id}
 						value={value}

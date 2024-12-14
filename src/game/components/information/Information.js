@@ -1,18 +1,15 @@
 import InfoLayout from "./InformationLayout";
-import PropTypes from "prop-types";
-import { store } from "../../store/store";
-import { useState, useEffect } from "react";
+import {
+	selectCurrentPlayer,
+	selectIsGameEnded,
+	selectorIsDraw,
+} from "../../store";
+import { useSelector } from "react-redux";
 
 export default function Info() {
-	const [state, setState] = useState(store.getState());
-
-	const { isDraw, isGameEnded, currentPlayer } = state;
-	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setState(store.getState());
-		});
-		return () => unsubscribe();
-	}, []);
+	const isDraw = useSelector(selectorIsDraw);
+	const isGameEnded = useSelector(selectIsGameEnded);
+	const currentPlayer = useSelector(selectCurrentPlayer);
 
 	const message = isDraw
 		? "Ничья!"
@@ -25,9 +22,3 @@ export default function Info() {
 
 	return <InfoLayout message={message} playerColor={playerColor} />;
 }
-
-Info.propTypes = {
-	currentPlayer: PropTypes.string,
-	isGameEnded: PropTypes.bool,
-	isDraw: PropTypes.bool,
-};
