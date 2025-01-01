@@ -1,24 +1,34 @@
-import InfoLayout from "./InformationLayout";
-import {
-	selectCurrentPlayer,
-	selectIsGameEnded,
-	selectorIsDraw,
-} from "../../store";
-import { useSelector } from "react-redux";
+import { Component } from "react";
+import { connect } from "react-redux";
+import styles from "./Info.module.css";
 
-export default function Info() {
-	const isDraw = useSelector(selectorIsDraw);
-	const isGameEnded = useSelector(selectIsGameEnded);
-	const currentPlayer = useSelector(selectCurrentPlayer);
+class InfoContainer extends Component {
+	message() {
+		const { isDraw, isGameEnded, currentPlayer } = this.props;
+		return isDraw
+			? "Ничья!"
+			: isGameEnded
+				? `Игра окончена! Игрок ${currentPlayer} выиграл`
+				: `Настала очередь ${currentPlayer}`;
+	}
 
-	const message = isDraw
-		? "Ничья!"
-		: isGameEnded
-			? `Игра окончена! Игрок ${currentPlayer} выиграл`
-			: `Настала очередь ${currentPlayer}`;
-
-	const playerColor = (styles) =>
-		currentPlayer === "X" ? styles.x : styles.o;
-
-	return <InfoLayout message={message} playerColor={playerColor} />;
+	playerColor(styles) {
+		const { currentPlayer } = this.props;
+		return currentPlayer === "X" ? styles.x : styles.o;
+	}
+	render() {
+		return (
+			<div className={`${styles.message} ${this.playerColor(styles)}`}>
+				{this.message()}
+			</div>
+		);
+	}
 }
+
+const mapStateToProps = (state) => ({
+	isDraw: state.isDraw,
+	isGameEnded: state.isGameEnded,
+	currentPlayer: state.currentPlayer,
+});
+
+export const Info = connect(mapStateToProps)(InfoContainer);
